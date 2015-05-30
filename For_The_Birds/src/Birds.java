@@ -1,6 +1,8 @@
 /*
 This code initializes the opening screen.
 Shows the game menu.
+Shows about.
+Shows help.
 Exits on clicking Exit.
 Exits on pressing "Esc".
 */
@@ -15,7 +17,7 @@ import javax.swing.*;
 public class Birds implements MouseListener, KeyListener, MouseMotionListener
 {
     ScreenManager s;
-    Image menu;
+    Image menu, about, help;
     boolean gameRunning = false;
     boolean gameMenu = true;
     boolean mPlay = false;
@@ -23,6 +25,10 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
     boolean mHelp = false;
     boolean mAbout = false;
     boolean mExit = false;
+    boolean About = false;
+    boolean mAbouta = false;
+    boolean mHelpa = false;
+    boolean Help = false;
     int flag1 = 1;
     public static void main(String args[])
     {
@@ -36,8 +42,9 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
      
      void init() //Will initialize all the elements
      {
-         menu = new ImageIcon("Menu.png").getImage();
-         
+         menu = new ImageIcon("Files/Images/Menu.png").getImage();
+         about = new ImageIcon("Files/Images/About.png").getImage();
+         help = new ImageIcon("Files/Images/Help.png").getImage();
          s = new ScreenManager();
      }
      
@@ -60,10 +67,27 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
                  paintOpeningScreen(g1);
                  s.update();
                  g1.dispose();
-                 //while(flag1==1)
-                 //{
-                     //while(Highscore)
-                 //}
+                 if(About == true)
+                 {
+                     while(About == true)
+                     {
+                        Graphics2D g2=s.getGraphics();
+                        paintAbout(g2);
+                        s.update();
+                        g1.dispose();
+                     }
+                 }
+                 if(Help == true)
+                 {
+                     while(Help == true)
+                     {
+                         Graphics2D g2=s.getGraphics();
+                         paintHelp(g2);
+                         s.update();
+                         g1.dispose();
+                     }
+                 }
+                 
              }
          }
          catch(Exception e){}
@@ -132,6 +156,44 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
          }
      }
      
+     public void paintAbout(Graphics2D g)
+    {
+        g.drawImage(about,0,0,null);
+        Font f = new Font("Forte", Font.BOLD, 30);
+        Color norm = new Color(221, 222, 227);
+        Color m = new Color(82, 104, 169);
+        g.setFont(f);
+        if(mAbouta == true)
+        {
+            g.setColor(m);
+            g.drawString("Back", 700, 500);
+        }
+        else
+        {
+            g.setColor(norm);
+            g.drawString("Back", 700, 500);
+        }
+    }
+     
+     public void paintHelp(Graphics2D g)
+    {
+        g.drawImage(help,0,0,null);
+        Font f = new Font("Forte", Font.BOLD, 30);
+        Color norm = new Color(170, 151, 109);
+        Color m = new Color(82, 104, 169);
+        g.setFont(f);
+        if(mHelpa == true)
+        {
+            g.setColor(norm);
+            g.drawString("Back", 700, 550);
+        }
+        else
+        {
+            g.setColor(m);
+            g.drawString("Back", 700, 550);
+        }
+    }
+     
      public void keyPressed(KeyEvent ke)
     {
         if(ke.getKeyCode()==KeyEvent.VK_ESCAPE)
@@ -151,9 +213,17 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
     
     public void mouseClicked(MouseEvent e) 
     {
-        System.out.println(e.getX() + " " + e.getY());
+        //System.out.println(e.getX() + " " + e.getY());
         if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205)
             System.exit(0);
+        if(e.getX()>550 && e.getX()<642 && e.getY()<205 && e.getY()>170)
+            About = true;
+        if(e.getX()>550 && e.getX()<618 && e.getY()<170 && e.getY()>135)
+            Help = true;
+        if(e.getX()>700 && e.getX()<815  && e.getY()< 500 && e.getY()>470)
+            About = false;
+        if(e.getX()>700 && e.getX()<815  && e.getY()< 550 && e.getY()>520)
+            Help = false;
     }
     
     public void mousePressed(MouseEvent e) 
@@ -203,5 +273,13 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
             mExit = true;
         else
             mExit = false;
+        if(e.getX()>700 && e.getX()<815  && e.getY()< 500 && e.getY()>470)
+            mAbouta = true;
+        else
+            mAbouta = false;
+        if(e.getX()>700 && e.getX()<815  && e.getY()< 550 && e.getY()>520)
+            mHelpa = true;
+        else
+            mHelpa = false;
     }
 }
