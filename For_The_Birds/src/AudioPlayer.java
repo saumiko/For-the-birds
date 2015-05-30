@@ -1,5 +1,6 @@
 import javax.sound.sampled.*;
 public class AudioPlayer {
+    static AudioPlayer player;
     
     private Clip clip;
     

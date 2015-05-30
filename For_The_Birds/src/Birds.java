@@ -1,6 +1,7 @@
 /*
 This code initializes the opening screen.
 Shows the game menu.
+Changes the Mouse Cursor.
 Shows about.
 Shows help.
 Exits on clicking Exit.
@@ -8,13 +9,13 @@ Exits on pressing "Esc".
 */
 import java.awt.*;
 import java.awt.event.*;
-//import java.io.File;
-//import javax.sound.sampled.AudioInputStream;
-//import javax.sound.sampled.AudioSystem;
-//import javax.sound.sampled.Clip;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
-public class Birds implements MouseListener, KeyListener, MouseMotionListener
+public class Birds implements MouseListener, KeyListener, MouseMotionListener, Runnable
 {
     ScreenManager s;
     Image menu, about, help;
@@ -30,6 +31,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
     boolean mHelpa = false;
     boolean Help = false;
     int flag1 = 1;
+    
     public static void main(String args[])
     {
         Birds b = new Birds();
@@ -46,6 +48,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
          about = new ImageIcon("Files/Images/About.png").getImage();
          help = new ImageIcon("Files/Images/Help.png").getImage();
          s = new ScreenManager();
+         //Thread t1 = new Thread();
      }
      
      public void run()
@@ -60,7 +63,11 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener
              w.addMouseListener(this);
              w.addMouseMotionListener(this);
              w.addKeyListener(this);
-             
+             Toolkit toolkit = Toolkit.getDefaultToolkit(); 
+             Image image = toolkit.getImage("Files/Images/Ab.gif"); 
+             Point hotSpot = new Point(0,0); 
+             Cursor cursor = toolkit.createCustomCursor(image, hotSpot, "Ab");
+             w.setCursor(cursor); 
              while(gameMenu == true)
              {
                  Graphics2D g1=s.getGraphics();
