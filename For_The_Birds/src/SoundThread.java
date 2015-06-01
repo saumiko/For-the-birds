@@ -10,6 +10,7 @@ public class SoundThread implements Runnable
     SoundThread()
     {
         Thread t = new Thread(this, "Sound Thread");
+        t.setPriority(2);
         t.start();
     }
     
