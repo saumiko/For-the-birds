@@ -1,15 +1,3 @@
-/*
-This code initializes the opening screen.
-Shows the game menu.
-Changes the Mouse Cursor.
-Shows about.
-Shows help.
-Highscore screen is available now.
-Play screen is also available now.
-Placed a demo bird on the gameplay screen.
-Exits on clicking Exit.
-Exits on pressing "Esc".
-*/
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
@@ -18,8 +6,7 @@ import javax.swing.*;
 public class Birds implements MouseListener, KeyListener, MouseMotionListener, Runnable
 {
     ScreenManager s;
-    Image menu, about, help, background, Pause, highscore, bird1 /*cloud1, cloud2, cloud3, cloud4 Mute, volume*/;
-//    boolean mute = false;
+    Image menu, about, help, background, Pause, highscore, cloud1, cloud2, cloud3, cloud4, bird1, bird2 /*Mute, volume*/;
     boolean Highscore = false;
     boolean mHighscorea = false;
     static public boolean play = false;
@@ -39,16 +26,19 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     boolean Resume = false;
     boolean mResumea = false;
     int flag1 = 1;
-//    int cloud1x = 100;
-//    int cloud2x = 200;
-//    int cloud3x = 500;
-//    int cloud1y = 40;
-//    int cloud2y = 100;
-//    int cloud3y = 300;
-//    int cloud4x = 800;
-//    int cloud4y = 600;
+    int cloud1x = 100;
+    int cloud2x = 200;
+    int cloud3x = 500;
+    int cloud1y = 40;
+    int cloud2y = 100;
+    int cloud3y = 300;
+    int cloud4x = 800;
+    int cloud4y = 600;
     static Birds main;
+    public long startTime, passedTime, total;
+    public static boolean showBird = true;
     Graphics2D gp;
+    PlayBird pl;
     
    //static SoundThread bsound = new SoundThread(); //Will start background sound
     
@@ -71,14 +61,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          background = new ImageIcon("Files/Images/background.png").getImage();
          Pause = new ImageIcon("Files/Images/Pause.png").getImage();
          highscore = new ImageIcon("Files/Images/HighScore.png").getImage();
-//         cloud1 = new ImageIcon("Files/Images/cloud1.png").getImage();
-//         cloud2 = new ImageIcon("Files/Images/cloud2.png").getImage();
-//         cloud3 = new ImageIcon("Files/Images/cloud3.png").getImage();
-//         cloud4 = new ImageIcon("Files/Images/cloud4.png").getImage();
+         cloud1 = new ImageIcon("Files/Images/cloud1.png").getImage();
+         cloud2 = new ImageIcon("Files/Images/cloud2.png").getImage();
+         cloud3 = new ImageIcon("Files/Images/cloud3.png").getImage();
+         cloud4 = new ImageIcon("Files/Images/cloud4.png").getImage();
          bird1 = new ImageIcon("Files/Images/bird1.gif").getImage();
-         //bird2 = new ImageIcon("Files/Images/bird2.gif").getImage();
-//         Mute = new ImageIcon("Files/Images/vdno.png").getImage();
-//         volume = new ImageIcon("Files/Images/vupo.png").getImage();
+         bird2 = new ImageIcon("Files/Images/bird2.gif").getImage();
          s = new ScreenManager();
      }
      
@@ -101,10 +89,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
              w.setCursor(cursor); 
              while(gameMenu == true)
              {
-//                 if(mute == true)
-//                     bsound.f=true;
-//                 else
-//                     bsound = new SoundThread();
                  Graphics2D g1=s.getGraphics();
                  paintOpeningScreen(g1);
                  s.update();
@@ -113,10 +97,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                  {
                      while(Highscore == true)
                      {
-//                         if(mute == true)
-//                            bsound.f=true;
-//                         else
-//                            bsound = new SoundThread();
                          Graphics2D g2=s.getGraphics();
                          paintHighScore(g2);
                          s.update();
@@ -127,10 +107,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                  {
                      while(About == true)
                      {
-//                         if(mute == true)
-//                            bsound.f=true;
-//                         else
-//                            bsound = new SoundThread();
                         Graphics2D g2=s.getGraphics();
                         paintAbout(g2);
                         s.update();
@@ -141,32 +117,24 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                  {
                      while(Help == true)
                      {
-//                         if(mute == true)
-//                            bsound.f=true;
-//                         else
-//                            bsound = new SoundThread();
                          Graphics2D g2=s.getGraphics();
                          paintHelp(g2);
                          s.update();
                          g1.dispose();
                      }
                  }
+                 
                  if(play == true)
                  {
+                     showBird = true;
+                     total = 0;
+                     startTime = System.currentTimeMillis();
                      gp = s.getGraphics();
-                     Clouds cloud = new Clouds(s,gp);
-                     //PlayBird p1 = new PlayBird(s,gp);
-                     //p1.PaintBird(gp);
+                     pl = new PlayBird(s, gp);
                      while(play == true)
                      {
-//                         if(mute == true)
-//                            bsound.f=true;
-//                         else
-//                            bsound = new SoundThread();
-                         //gp = s.getGraphics();
+                         gp = s.getGraphics();
                          paintPlay(gp);
-                         //cloud.run();
-                         //p1.PaintBird(gp);
                          s.update();
                          g1.dispose();
                          if(pause == true)
@@ -193,10 +161,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
      public void paintOpeningScreen(Graphics2D g1)
      {
          g1.drawImage(menu,0,0,null);
-//         if(mute == true)
-//             g1.drawImage(Mute, 0, 0, null);
-//         else
-//             g1.drawImage(volume, 0, 0, null);
          Font f = new Font("Forte", Font.BOLD, 30);
          Color norm = new Color(221, 222, 227);
          Color m = new Color(82, 104, 169);
@@ -256,16 +220,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
      public void paintPlay(Graphics2D g)
      {
          g.drawImage(background, 0, 0, null);
-//         if(mute == true)
-//             g.drawImage(Mute, 0, 0, null);
-//         else
-//             g.drawImage(volume, 0, 0, null);
-//         g.drawImage(cloud1,cloud1x,cloud1y,null);
-//         g.drawImage(cloud2,cloud2x,cloud2y,null);
-//         g.drawImage(cloud3,cloud3x,cloud3y,null);
-//         g.drawImage(cloud4,cloud4x,cloud4y,null);
-        // updatingClouds();
-         g.drawImage(bird1 ,400, 300, null);
+         g.drawImage(cloud1,cloud1x,cloud1y,null);
+         g.drawImage(cloud2,cloud2x,cloud2y,null);
+         g.drawImage(cloud3,cloud3x,cloud3y,null);
+         g.drawImage(cloud4,cloud4x,cloud4y,null);
+         updatingClouds();
+         //g.drawImage(bird1 ,400, 300, null);
          Font f = new Font("Papyrus", Font.BOLD, 20);
          Color norm = new Color(49,50,93);
          Color m = new Color(253,136,40);
@@ -290,10 +250,15 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
              g.setColor(norm);
              g.drawString("PAUSE", 685, 550);
          }
-         
+         passedTime = System.currentTimeMillis() - startTime;
+         total += passedTime;
+         if(total<10000)
+            pl.run();
+         else
+            Birds.showBird = false;
      }
      
-     /*public void updatingClouds(){
+     public void updatingClouds(){
 
         Random r = new Random();
         if (cloud1x > s.getWidth())
@@ -323,15 +288,11 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
         cloud2x += 2;
         cloud3x += 1;
         cloud4x += 1;
-    }*/
+    }
      
      public void paintPause(Graphics2D g)
      {
          g.drawImage(Pause,0,0,null);
-//         if(mute == true)
-//             g.drawImage(Mute, 0, 0, null);
-//         else
-//             g.drawImage(volume, 0, 0, null);
          Font f = new Font("Forte", Font.BOLD, 60);
          Color norm = new Color(4,116,189);
          Color m = new Color(31,31,82);
@@ -352,10 +313,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
      public void paintHighScore(Graphics2D g)
      {
          g.drawImage(highscore,0,0,null);
-//         if(mute == true)
-//             g.drawImage(Mute, 0, 0, null);
-//         else
-//             g.drawImage(volume, 0, 0, null);
          Font f = new Font("Comic Sans MS", Font.BOLD, 24);
          Color norm = new Color(4,116,189);
          Color m = new Color(31,31,82);
@@ -376,10 +333,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
      public void paintAbout(Graphics2D g)
     {
         g.drawImage(about,0,0,null);
-//        if(mute == true)
-//             g.drawImage(Mute, 0, 0, null);
-//         else
-//             g.drawImage(volume, 0, 0, null);
         Font f = new Font("Forte", Font.BOLD, 30);
         Color norm = new Color(221, 222, 227);
         Color m = new Color(82, 104, 169);
@@ -399,10 +352,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
      public void paintHelp(Graphics2D g)
     {
         g.drawImage(help,0,0,null);
-//        if(mute == true)
-//             g.drawImage(Mute, 0, 0, null);
-//         else
-//             g.drawImage(volume, 0, 0, null);
         Font f = new Font("Forte", Font.BOLD, 30);
         Color norm = new Color(170, 151, 109);
         Color m = new Color(82, 104, 169);
@@ -438,7 +387,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     
     public void mouseClicked(MouseEvent e) 
     {
-        //System.out.println(e.getX() + " " + e.getY());
         if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205)
             System.exit(0);
         if(e.getX()>550 && e.getX()<642 && e.getY()<205 && e.getY()>170)
@@ -461,13 +409,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             Highscore = true;
         if(e.getX()>375 && e.getX()<453 && e.getY()<500 && e.getY()>478)
             Highscore = false;
-//        if(e.getX()>0 && e.getX()<80 && e.getY()>0 && e.getY()<80)
-//        {
-//            if(mute == false)
-//                mute = true;
-//            else
-//                mute = false;
-//        }
     }
     
     public void mousePressed(MouseEvent e) 
