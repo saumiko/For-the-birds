@@ -59,3 +59,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /For_The_Birds/dist/
+/For_The_Birds_v3/build/

@@ -35,6 +35,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     int cloud4x = 800;
     int cloud4y = 600;
     static Birds main;
+    private int bird = 0;
     public long startTime, passedTime, total;
     public static boolean showBird = true;
     Graphics2D gp;
@@ -250,12 +251,15 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
              g.setColor(norm);
              g.drawString("PAUSE", 685, 550);
          }
+         //while(bird<10){
          passedTime = System.currentTimeMillis() - startTime;
          total += passedTime;
          if(total<10000)
             pl.run();
          else
             Birds.showBird = false;
+         bird++;
+         //}
      }
      
      public void updatingClouds(){

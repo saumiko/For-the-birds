@@ -55,12 +55,7 @@ public class PlayBird implements MouseListener//, Runnable
             //g.drawImage(bird2, x, y, 80, 80, null);
         try
         {
-//            Thread.sleep(1000);
-            //timer = new Timer(1000, new TimerListener());
-            //timer.start();
-            //g.drawImage(transp, x, y, 80, 80, null);
-//            timer = new Timer(10000, new TimerListener());
-//            timer.start();
+
         }
         catch(Exception e){}
         finally
