@@ -256,6 +256,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             pl.run();
          else
             Birds.showBird = false;
+		//passedTime = System.currentTimeMillis() - startTime;
+         //total += passedTime;
+         //if(total<10000)
+            //pl.run();
+         //else
+            //Birds.showBird = false;
      }
      
      public void updatingClouds(){
