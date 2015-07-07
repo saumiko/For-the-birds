@@ -23,9 +23,22 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     boolean mAbout = false;
     boolean mHelp = false;
     boolean mExit = false;
-    boolean mPause_a = false;
-    boolean mResume_a = false;
-    public static boolean cloudPlay = false;
+    boolean mPausea = false;
+    boolean mResumea = false;
+    boolean mBacka = false;
+    boolean mHelpa = false;
+    boolean mAbouta = false;
+    boolean mHighscorea = false;
+    public static boolean showBird = false;
+    public Image cloud1, cloud2, cloud3, cloud4;
+    private int cloud1x = 100;
+    private int cloud2x = 200;
+    private int cloud3x = 500;
+    private int cloud1y = 40;
+    private int cloud2y = 100;
+    private int cloud3y = 300;
+    private int cloud4x = 800;
+    private int cloud4y = 600;
     
     public static void main(String args[])
     {
@@ -40,13 +53,17 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     
     void init() //Will initialize all the elements
      {
-         
          menu = new ImageIcon("Files/Images/Menu.png").getImage();
          about = new ImageIcon("Files/Images/About.png").getImage();
          help = new ImageIcon("Files/Images/Help.png").getImage();
          background = new ImageIcon("Files/Images/background.png").getImage();
          pause = new ImageIcon("Files/Images/Pause.png").getImage();
          highscore = new ImageIcon("Files/Images/HighScore.png").getImage();
+         cloud1 = new ImageIcon("Files/Images/cloud1.png").getImage();
+         cloud2 = new ImageIcon("Files/Images/cloud2.png").getImage();
+         cloud3 = new ImageIcon("Files/Images/cloud3.png").getImage();
+         cloud4 = new ImageIcon("Files/Images/cloud4.png").getImage();
+         //bird1 = new ImageIcon("Files/Images/pakhi1.gif").getImage();
          s = new ScreenManager();
      }
          
@@ -102,6 +119,35 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                          gm.dispose();
                      }
                  }
+                 if(Play == true)
+                 {
+                     showBird = true;
+                     //total = 0;
+                     //startTime = System.currentTimeMillis();
+                     gm = s.getGraphics();
+                     PlayBird Pl = new PlayBird();
+                     while(Play == true)
+                     {
+                         
+                         gm = s.getGraphics();
+                         paintPlay(gm);
+                         s.update();
+                         gm.dispose();
+                         if(Pause == true)
+                         {
+                             showBird = false;
+                             while(Pause == true)
+                             {
+                                 Graphics2D g3 = s.getGraphics();
+                                 paintPause(g3);
+                                 s.update();
+                                 gm.dispose();
+                             }
+                             showBird = true;
+                         }
+                         
+                     }
+                 }
             }
         }
         catch(Exception e){}
@@ -109,6 +155,85 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
         {
             s.restoreScreen();
         }
+    }
+    
+    public void paintPlay(Graphics2D g)
+     {
+         g.drawImage(background, 0, 0, null);
+         g.drawImage(cloud1,cloud1x,cloud1y,null);
+         g.drawImage(cloud2,cloud2x,cloud2y,null);
+         g.drawImage(cloud3,cloud3x,cloud3y,null);
+         g.drawImage(cloud4,cloud4x,cloud4y,null);
+         updatingClouds();
+         //g.drawImage(bird1 ,400, 300, 80,80, null);
+         Font f = new Font("Papyrus", Font.BOLD, 20);
+         Color norm = new Color(49,50,93);
+         Color m = new Color(253,136,40);
+         g.setFont(f);
+         if(mBacka==true)
+         {
+             g.setColor(m);
+             g.drawString("BACK", 20, 550);
+         }
+         else
+         {
+             g.setColor(norm);
+             g.drawString("BACK", 20, 550);
+         }
+         if(mPausea == true)
+         {
+             g.setColor(m);
+             g.drawString("PAUSE", 685, 550);
+         }
+         else
+         {
+             g.setColor(norm);
+             g.drawString("PAUSE", 685, 550);
+         }
+         //passedTime = System.currentTimeMillis() - startTime;
+         //total += passedTime;
+         //if(total<10000)
+            //pl.run();
+         //else
+            //Birds.showBird = false;
+		//passedTime = System.currentTimeMillis() - startTime;
+         //total += passedTime;
+         //if(total<10000)
+            //pl.run();
+         //else
+            //Birds.showBird = false;
+     }
+    
+    public void updatingClouds(){
+
+        Random r = new Random();
+        if (cloud1x > s.getWidth())
+        {
+            cloud1x = cloud1.getWidth(null) * (-1);
+            cloud1y = r.nextInt(499);
+        }
+
+        if (cloud2x > s.getWidth())
+        {
+            cloud2x = cloud2.getWidth(null) * (-1);
+            cloud2y = r.nextInt(499);
+        }
+
+        if (cloud3x > s.getWidth())
+        {
+            cloud3x = cloud3.getWidth(null) * (-1);
+            cloud3y = r.nextInt(499);
+        }
+
+        if (cloud4x > s.getWidth())
+        {
+            cloud4x = cloud4.getWidth(null) * (-1);
+            cloud4y = r.nextInt(499);
+        }
+        cloud1x += 1;
+        cloud2x += 2;
+        cloud3x += 1;
+        cloud4x += 1;
     }
     
     public void paintOpeningScreen(Graphics2D g1)
@@ -169,6 +294,84 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
              g1.drawString("Exit", 550, 240);
          }
      }
+    
+    public void paintPause(Graphics2D g)
+     {
+         g.drawImage(pause,0,0,null);
+         Font f = new Font("Forte", Font.BOLD, 60);
+         Color norm = new Color(4,116,189);
+         Color m = new Color(31,31,82);
+         g.setFont(f);
+         if(mResumea == true)
+         {
+             g.setColor(m);
+             g.drawString("RESUME", 260, 400);
+         }
+         else
+         {
+             g.setColor(norm);
+             g.drawString("RESUME", 260, 400);
+         }
+             
+     }
+     
+     public void paintHighScore(Graphics2D g)
+     {
+         g.drawImage(highscore,0,0,null);
+         Font f = new Font("Comic Sans MS", Font.BOLD, 24);
+         Color norm = new Color(4,116,189);
+         Color m = new Color(31,31,82);
+         g.setFont(f);
+         if(mHighscorea == true)
+         {
+             g.setColor(m);
+             g.drawString("BACK", 375, 500);
+         }
+         else
+         {
+             g.setColor(norm);
+             g.drawString("BACK", 375, 500);
+         }
+             
+     }
+     
+     public void paintAbout(Graphics2D g)
+    {
+        g.drawImage(about,0,0,null);
+        Font f = new Font("Forte", Font.BOLD, 30);
+        Color norm = new Color(221, 222, 227);
+        Color m = new Color(82, 104, 169);
+        g.setFont(f);
+        if(mAbouta == true)
+        {
+            g.setColor(m);
+            g.drawString("Back", 700, 500);
+        }
+        else
+        {
+            g.setColor(norm);
+            g.drawString("Back", 700, 500);
+        }
+    }
+     
+     public void paintHelp(Graphics2D g)
+    {
+        g.drawImage(help,0,0,null);
+        Font f = new Font("Forte", Font.BOLD, 30);
+        Color norm = new Color(170, 151, 109);
+        Color m = new Color(82, 104, 169);
+        g.setFont(f);
+        if(mHelpa == true)
+        {
+            g.setColor(norm);
+            g.drawString("Back", 700, 550);
+        }
+        else
+        {
+            g.setColor(m);
+            g.drawString("Back", 700, 550);
+        }
+    }
 
     public void mouseClicked(MouseEvent e) 
     {
@@ -259,5 +462,29 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             mExit = true;
         else
             mExit = false;
+        if(e.getX()>700 && e.getX()<815  && e.getY()< 500 && e.getY()>470)
+            mAbouta = true;
+        else
+            mAbouta = false;
+        if(e.getX()>700 && e.getX()<815  && e.getY()< 550 && e.getY()>520)
+            mHelpa = true;
+        else
+            mHelpa = false;
+        if(e.getX()>20 && e.getX()<88 && e.getY()>530 && e.getY()<550)
+            mBacka = true;
+        else
+            mBacka = false;
+        if(e.getX()>685 && e.getX()<768 && e.getY()>530 && e.getY()<550)
+            mPausea = true;
+        else
+            mPausea = false;
+        if(e.getX()>260 && e.getX()<510 && e.getY()<400 && e.getY()>340)
+            mResumea = true;
+        else
+            mResumea = false;
+        if(e.getX()>375 && e.getX()<453 && e.getY()<500 && e.getY()>478)//width 55
+            mHighscorea = true;
+        else
+            mHighscorea = false;
     }
 }
