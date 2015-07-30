@@ -3,7 +3,7 @@ import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 
-public class PlayBird extends Birds implements MouseListener, Runnable
+public class PlayBird extends Birds
 {
     public int dx;
     public int dy;
@@ -23,8 +23,8 @@ public class PlayBird extends Birds implements MouseListener, Runnable
     {
         s = super.s;
         gm = super.gm;
-        bird1 = new ImageIcon("Files/Images/pakhi1.gif").getImage();
-        bird2 = new ImageIcon("Files/Images/pakhi2.gif").getImage();
+        bird1 = new ImageIcon("Files/Images/Bird1.gif").getImage();
+        bird2 = new ImageIcon("Files/Images/Bird2.gif").getImage();
         while(y<100)
             y = r.nextInt(450);
         while(x<100)
@@ -33,6 +33,7 @@ public class PlayBird extends Birds implements MouseListener, Runnable
         Thread t = new Thread(this, "Bird");
         t.setPriority(6);
         t.start();
+        
     }
     
     public void setxy(int x, int y)
@@ -64,10 +65,14 @@ public class PlayBird extends Birds implements MouseListener, Runnable
                 System.out.println("Loop e Dhukse");
                 try{
                     System.out.println("try block e Dhukse");
-                if(r.nextBoolean())
-                    gm.drawImage(bird1, x, y, 80, 80, null);
-                else
-                    gm.drawImage(bird2, x, y, 80, 80, null);
+                //if(r.nextBoolean()){
+                    //gm.drawImage(bird1, x, y, 80, 80, null);
+                    //System.out.println("bird1");
+                //}
+//                else{
+//                    gm.drawImage(bird2, x, y, 80, 80, null);
+//                    System.out.println("Bird2");}
+                s.update();
                 }
                 catch(Exception e){}
                 finally
@@ -76,8 +81,10 @@ public class PlayBird extends Birds implements MouseListener, Runnable
                 }
                 while(click == false)
                 {
+                    System.out.println("click hoenai!!!");
                     if(click == true)
                     {
+                        System.out.println("click hoise!!!");
                         if(mx>x  && mx<x+80 && my>y && my < y+80)
                             hit = true;
                         else
@@ -94,13 +101,14 @@ public class PlayBird extends Birds implements MouseListener, Runnable
         return;
     }
     
+    public void paint(Graphics2D g){
+        g.drawImage(bird1, x, y, 80, 80, null);
+    }
+    
     public void mouseClicked(MouseEvent e) 
     {
         
-        click = true;
-        mx = (int)MouseInfo.getPointerInfo().getLocation().getX();
-        my = (int)MouseInfo.getPointerInfo().getLocation().getY();
-        System.out.println("MouseClicked!" + mx + " " + my);
+       // click = true
     }
 
     public void mousePressed(MouseEvent e) 

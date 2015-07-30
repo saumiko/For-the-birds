@@ -9,7 +9,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     PlayBird Bird;
     Clouds cloud;
     public ScreenManager s;
-    public static Image menu, about, help, background, pause, highscore;
+    public static Image menu, about, help, background, pause, highscore, bird1, bird2;
     boolean GameMenu = true;
     boolean HighScore = false;
     boolean Pause = false;
@@ -29,6 +29,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     boolean mHelpa = false;
     boolean mAbouta = false;
     boolean mHighscorea = false;
+    boolean birdDrawnOneTime = false;
     public static boolean showBird = false;
     public Image cloud1, cloud2, cloud3, cloud4;
     private int cloud1x = 100;
@@ -63,7 +64,8 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          cloud2 = new ImageIcon("Files/Images/cloud2.png").getImage();
          cloud3 = new ImageIcon("Files/Images/cloud3.png").getImage();
          cloud4 = new ImageIcon("Files/Images/cloud4.png").getImage();
-         //bird1 = new ImageIcon("Files/Images/pakhi1.gif").getImage();
+         bird1 = new ImageIcon("Files/Images/Bird1.gif").getImage();
+         bird2 = new ImageIcon("Files/Images/Bird2.gif").getImage();
          s = new ScreenManager();
      }
          
@@ -125,7 +127,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                      //total = 0;
                      //startTime = System.currentTimeMillis();
                      gm = s.getGraphics();
-                     PlayBird Pl = new PlayBird();
+                     Bird = new PlayBird();
                      while(Play == true)
                      {
                          
@@ -165,7 +167,13 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          g.drawImage(cloud3,cloud3x,cloud3y,null);
          g.drawImage(cloud4,cloud4x,cloud4y,null);
          updatingClouds();
-         //g.drawImage(bird1 ,400, 300, 80,80, null);
+         
+         Bird.paint(g);
+         
+//         g.drawImage(bird1 ,400, 300, 80,80, null);
+//         g.drawImage(bird2, 600, 200, 80, 80, null);
+//         g.drawImage(bird1, 480, 380, 80, 80, null);
+//         g.drawImage(bird2, 680, 280, 80, 80, null);
          Font f = new Font("Papyrus", Font.BOLD, 20);
          Color norm = new Color(49,50,93);
          Color m = new Color(253,136,40);
@@ -397,6 +405,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             HighScore = true;
         if(e.getX()>375 && e.getX()<453 && e.getY()<500 && e.getY()>478)
             HighScore = false;
+        if (Play == true && Pause == false){
+            Bird.click = true;
+            Bird.mx = (int)e.getX();
+            Bird.my = (int)e.getY();
+            
+        }
     }
 
     public void mousePressed(MouseEvent e) 

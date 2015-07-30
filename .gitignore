@@ -60,3 +60,5 @@ $RECYCLE.BIN/
 *.lnk
 /For_The_Birds/dist/
 /For_The_Birds_v3/build/
+/For_The_Birds_v4/nbproject/private/
+/For_The_Birds_v4/build/
