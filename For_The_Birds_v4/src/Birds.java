@@ -42,6 +42,11 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     private int cloud4x = 800;
     private int cloud4y = 600;
     
+    long cumTime,timePassed, timePassed2 =0, passedTime;
+    
+    static SoundThread bsound = new SoundThread(); //Will start background sound
+    
+    
     public static void main(String args[])
     {
         Birds main = new Birds();
@@ -127,7 +132,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                  {
                      showBird = true;
                      //total = 0;
-                     //startTime = System.currentTimeMillis();
+                     cumTime = System.currentTimeMillis();
                      gm = s.getGraphics();
                      
                      while(Play == true)
@@ -173,14 +178,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          g.drawImage(cloud2,cloud2x,cloud2y,null);
          g.drawImage(cloud3,cloud3x,cloud3y,null);
          g.drawImage(cloud4,cloud4x,cloud4y,null);
+         
+         timePassed = System.currentTimeMillis() - cumTime;
+         timePassed2 += timePassed;
+         if(timePassed2<50000)
+            Bird.paint(g);
          updatingClouds();
-         
-         Bird.paint(g);
-         
-//         g.drawImage(bird1 ,400, 300, 80,80, null);
-//         g.drawImage(bird2, 600, 200, 80, 80, null);
-//         g.drawImage(bird1, 480, 380, 80, 80, null);
-//         g.drawImage(bird2, 680, 280, 80, 80, null);
          Font f = new Font("Papyrus", Font.BOLD, 20);
          Color norm = new Color(49,50,93);
          Color m = new Color(253,136,40);
@@ -205,18 +208,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
              g.setColor(norm);
              g.drawString("PAUSE", 685, 550);
          }
-         //passedTime = System.currentTimeMillis() - startTime;
-         //total += passedTime;
-         //if(total<10000)
-            //pl.run();
-         //else
-            //Birds.showBird = false;
-		//passedTime = System.currentTimeMillis() - startTime;
-         //total += passedTime;
-         //if(total<10000)
-            //pl.run();
-         //else
-            //Birds.showBird = false;
+         
      }
     
     public void updatingClouds(){
@@ -390,7 +382,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
 
     public void mouseClicked(MouseEvent e) 
     {
-        if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205)
+        if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205 && Play == false && Pause == false)
             System.exit(0);
         if(e.getX()>550 && e.getX()<642 && e.getY()<205 && e.getY()>170)
             About = true;
@@ -412,14 +404,21 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             HighScore = true;
         if(e.getX()>375 && e.getX()<453 && e.getY()<500 && e.getY()>478)
             HighScore = false;
-        if (Play == true && Pause == false){
+        if (Play == true && Pause == false)
+        {
+            About = false;
+            Help = false;
+            HighScore = false;
             letTheBirdToUpdate = true;
+            timePassed2 = 0;
+            cumTime = System.currentTimeMillis();
             int x = (int)e.getX();
             int y = (int)e.getY();
-            if(x>Bird.x && x<Bird.x+80 && y>Bird.y && y<Bird.y+80 )
+            if(x>Bird.x && x<Bird.x+50 && y>Bird.y && y<Bird.y+50 )
                 System.out.println("HIT");
             else 
                 System.out.println("NOT");
+            //Bird.IncreaseShow();
         }
     }
 

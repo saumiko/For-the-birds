@@ -5,6 +5,7 @@ import javax.swing.*;
 
 public class PlayBird extends Birds
 {
+    private int i, show = 0;
     public int dx;
     public int dy;
     public int x = 0;
@@ -13,7 +14,9 @@ public class PlayBird extends Birds
     public int my = 0;
     public boolean hit;
     boolean click = false;
-    public Image bird1, bird2;
+//    public Image[] bird1 = new  Image[40];
+//    public Image[] bird2 = new  Image[40];
+    Image bird6;
     ScreenManager s;
     Graphics2D gm;
     
@@ -23,9 +26,12 @@ public class PlayBird extends Birds
     {
         s = super.s;
         gm = super.gm;
-        bird1 = new ImageIcon("Files/Images/Bird2.gif").getImage();
-        bird2 = new ImageIcon("Files/Images/Bird2.gif").getImage();
-        
+//        for(i=0;i<40;i++)
+//        {
+//            bird1[i] = new ImageIcon("Files/Images/Bird1.gif").getImage();
+//            bird2[i] = new ImageIcon("Files/Images/Bird2.gif").getImage();
+//        }
+        bird6 = new ImageIcon("Files/Images/Bird6.png").getImage();
     }
     
     public void updateBird(){
@@ -36,7 +42,6 @@ public class PlayBird extends Birds
         while(x<100)
             x = r.nextInt(700);
         //setxy(x,y);
-        bird1 = new ImageIcon("Files/Images/Bird2.gif").getImage();
     }
     
     public void setxy(int x, int y)
@@ -58,7 +63,12 @@ public class PlayBird extends Birds
    
     
     public void paint(Graphics2D g){
-        g.drawImage(bird1, x, y,  80,80,null);
+        g.drawImage(bird6, x, y, 80,80,null);
+    }
+    
+    public void IncreaseShow()
+    {
+        show++;
     }
     
     public void mouseClicked(MouseEvent e) 

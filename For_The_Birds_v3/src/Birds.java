@@ -40,6 +40,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     private int cloud3y = 300;
     private int cloud4x = 800;
     private int cloud4y = 600;
+    long cumTime,timePassed, timePassed2 =0, passedTime;
     
     public static void main(String args[])
     {
@@ -121,13 +122,15 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                          gm.dispose();
                      }
                  }
+                  Bird = new PlayBird();
                  if(Play == true)
                  {
                      showBird = true;
                      //total = 0;
-                     //startTime = System.currentTimeMillis();
+                     cumTime = System.currentTimeMillis();
+                     
                      gm = s.getGraphics();
-                     Bird = new PlayBird();
+                    
                      while(Play == true)
                      {
                          
@@ -167,8 +170,10 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          g.drawImage(cloud3,cloud3x,cloud3y,null);
          g.drawImage(cloud4,cloud4x,cloud4y,null);
          updatingClouds();
-         
-         Bird.paint(g);
+         timePassed = System.currentTimeMillis() - cumTime;
+         timePassed2 += timePassed;
+         if(timePassed2<5000)
+            Bird.paint(g);
          
 //         g.drawImage(bird1 ,400, 300, 80,80, null);
 //         g.drawImage(bird2, 600, 200, 80, 80, null);

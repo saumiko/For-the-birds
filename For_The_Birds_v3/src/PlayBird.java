@@ -23,7 +23,7 @@ public class PlayBird extends Birds
     {
         s = super.s;
         gm = super.gm;
-        bird1 = new ImageIcon("Files/Images/Bird1.gif").getImage();
+        bird1 = new ImageIcon("Files/Images/Bird6.png").getImage();
         bird2 = new ImageIcon("Files/Images/Bird2.gif").getImage();
         while(y<100)
             y = r.nextInt(450);
