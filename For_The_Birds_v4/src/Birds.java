@@ -7,44 +7,37 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
 {
     public Graphics2D gm;
     PlayBird Bird;
-    Clouds cloud;
-    public ScreenManager s;
-    public static Image menu, about, help, background, pause, highscore, bird1, bird2;
-    boolean GameMenu = true;
-    boolean letTheBirdToUpdate = true;
-    boolean HighScore = false;
-    boolean Pause = false;
-    boolean Help = false;
-    boolean About = false;
-    boolean Resume = false;
-    public static boolean Play = false;
-    boolean mPlay = false;
-    boolean mHighScore = false;
-    boolean mPause = false;
-    boolean mAbout = false;
-    boolean mHelp = false;
-    boolean mExit = false;
-    boolean mPausea = false;
-    boolean mResumea = false;
-    boolean mBacka = false;
-    boolean mHelpa = false;
-    boolean mAbouta = false;
-    boolean mHighscorea = false;
-    boolean birdDrawnOneTime = false;
-    public static boolean showBird = false;
-    public Image cloud1, cloud2, cloud3, cloud4;
-    private int cloud1x = 100;
-    private int cloud2x = 200;
-    private int cloud3x = 500;
-    private int cloud1y = 40;
-    private int cloud2y = 100;
-    private int cloud3y = 300;
-    private int cloud4x = 800;
-    private int cloud4y = 600;
+    Chirping chirping;
+    Crow crow;
+    static public ScreenManager s;
+    static public Image menu, about, help, background, pause, highscore, bird1, bird2;
+    static boolean GameMenu = true;
+    static boolean letTheBirdToUpdate = true;
+    static boolean HighScore = false;
+    static boolean Pause = false;
+    static boolean Help = false;
+    static boolean About = false;
+    static boolean Resume = false;
+    static public boolean Play = false;
+    static boolean mPlay = false;
+    static boolean mHighScore = false;
+    static boolean mPause = false;
+    static boolean mAbout = false;
+    static boolean mHelp = false;
+    static boolean mExit = false;
+    static boolean mPausea = false;
+    static boolean mResumea = false;
+    static boolean mBacka = false;
+    static boolean mHelpa = false;
+    static boolean mAbouta = false;
+    static boolean mHighscorea = false;
+    static boolean birdDrawnOneTime = false;
+    static public boolean showBird = false;
+    private boolean start = false;
     
     long cumTime,timePassed, timePassed2 =0, passedTime;
     
-    static SoundThread bsound = new SoundThread(); //Will start background sound
+    final static SoundThread bsound = new SoundThread(); //Will start background sound
     
     
     public static void main(String args[])
@@ -66,10 +59,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          background = new ImageIcon("Files/Images/background.png").getImage();
          pause = new ImageIcon("Files/Images/Pause.png").getImage();
          highscore = new ImageIcon("Files/Images/HighScore.png").getImage();
-         cloud1 = new ImageIcon("Files/Images/cloud1.png").getImage();
-         cloud2 = new ImageIcon("Files/Images/cloud2.png").getImage();
-         cloud3 = new ImageIcon("Files/Images/cloud3.png").getImage();
-         cloud4 = new ImageIcon("Files/Images/cloud4.png").getImage();
          bird1 = new ImageIcon("Files/Images/Bird1.gif").getImage();
          bird2 = new ImageIcon("Files/Images/Bird2.gif").getImage();
          s = new ScreenManager();
@@ -95,7 +84,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             while(GameMenu==true)
             {
                 Graphics2D gm = s.getGraphics();
-                paintOpeningScreen(gm);
+                Paint.paintOpeningScreen(gm);
                 s.update();
                 gm.dispose();
                 if(HighScore == true)
@@ -103,7 +92,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                      while(HighScore == true)
                      {
                          Graphics2D g1=s.getGraphics();
-                         paintHighScore(g1);
+                         Paint.paintHighScore(g1);
                          s.update();
                          gm.dispose();
                      }
@@ -113,7 +102,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                      while(About == true)
                      {
                         Graphics2D g1=s.getGraphics();
-                        paintAbout(g1);
+                        Paint.paintAbout(g1);
                         s.update();
                         gm.dispose();
                      }
@@ -123,13 +112,14 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                      while(Help == true)
                      {
                          Graphics2D g1=s.getGraphics();
-                         paintHelp(g1);
+                         Paint.paintHelp(g1);
                          s.update();
                          gm.dispose();
                      }
                  }
                  if(Play == true)
                  {
+                     Pause = false;
                      showBird = true;
                      //total = 0;
                      cumTime = System.currentTimeMillis();
@@ -137,6 +127,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                      
                      while(Play == true)
                      {
+                         start = true;
                         if (letTheBirdToUpdate == true)
                         {
                             System.out.println("INSIDE updatebird");
@@ -153,11 +144,11 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                              while(Pause == true)
                              {
                                  Graphics2D g3 = s.getGraphics();
-                                 paintPause(g3);
+                                 Paint.paintPause(g3);
                                  s.update();
                                  gm.dispose();
                              }
-                             showBird = true;
+                             start = false;
                          }
                          
                      }
@@ -174,16 +165,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     public void paintPlay(Graphics2D g)
      {
          g.drawImage(background, 0, 0, null);
-         g.drawImage(cloud1,cloud1x,cloud1y,null);
-         g.drawImage(cloud2,cloud2x,cloud2y,null);
-         g.drawImage(cloud3,cloud3x,cloud3y,null);
-         g.drawImage(cloud4,cloud4x,cloud4y,null);
-         
+         Clouds.paintCloud(g);         
          timePassed = System.currentTimeMillis() - cumTime;
          timePassed2 += timePassed;
          if(timePassed2<50000)
             Bird.paint(g);
-         updatingClouds();
+         Clouds.updatingClouds();
          Font f = new Font("Papyrus", Font.BOLD, 20);
          Color norm = new Color(49,50,93);
          Color m = new Color(253,136,40);
@@ -210,176 +197,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          }
          
      }
-    
-    public void updatingClouds(){
-
-        Random r = new Random();
-        if (cloud1x > s.getWidth())
-        {
-            cloud1x = cloud1.getWidth(null) * (-1);
-            cloud1y = r.nextInt(499);
-        }
-
-        if (cloud2x > s.getWidth())
-        {
-            cloud2x = cloud2.getWidth(null) * (-1);
-            cloud2y = r.nextInt(499);
-        }
-
-        if (cloud3x > s.getWidth())
-        {
-            cloud3x = cloud3.getWidth(null) * (-1);
-            cloud3y = r.nextInt(499);
-        }
-
-        if (cloud4x > s.getWidth())
-        {
-            cloud4x = cloud4.getWidth(null) * (-1);
-            cloud4y = r.nextInt(499);
-        }
-        cloud1x += 1;
-        cloud2x += 2;
-        cloud3x += 1;
-        cloud4x += 1;
-    }
-    
-    public void paintOpeningScreen(Graphics2D g1)
-     {
-         g1.drawImage(menu,0,0,null);
-         Font f = new Font("Forte", Font.BOLD, 30);
-         Color norm = new Color(221, 222, 227);
-         Color m = new Color(82, 104, 169);
-         g1.setFont(f);
-         if(mPlay == true)
-         {
-             g1.setColor(m);
-             g1.drawString("Play", 550, 100);
-         }
-         else
-         {
-             g1.setColor(norm);
-             g1.drawString("Play", 550, 100);
-         }
-         if(mHighScore == true)
-         {
-             g1.setColor(m);
-             g1.drawString("High Score", 550, 135);
-         }
-         else
-         {
-             g1.setColor(norm);
-             g1.drawString("High Score", 550, 135);
-         }
-         if(mHelp == true)
-         {
-             g1.setColor(m);
-             g1.drawString("Help", 550, 170);
-         }
-         else
-         {
-             g1.setColor(norm);
-             g1.drawString("Help", 550, 170);
-         }
-         if(mAbout == true)
-         {
-             g1.setColor(m);
-             g1.drawString("About", 550, 205);
-         }
-         else
-         {
-             g1.setColor(norm);
-             g1.drawString("About", 550, 205);
-         }
-         if(mExit == true)
-         {
-             g1.setColor(m);
-             g1.drawString("Exit", 550, 240);
-         }
-         else
-         {
-             g1.setColor(norm);
-             g1.drawString("Exit", 550, 240);
-         }
-     }
-    
-    public void paintPause(Graphics2D g)
-     {
-         g.drawImage(pause,0,0,null);
-         Font f = new Font("Forte", Font.BOLD, 60);
-         Color norm = new Color(4,116,189);
-         Color m = new Color(31,31,82);
-         g.setFont(f);
-         if(mResumea == true)
-         {
-             g.setColor(m);
-             g.drawString("RESUME", 260, 400);
-         }
-         else
-         {
-             g.setColor(norm);
-             g.drawString("RESUME", 260, 400);
-         }
-             
-     }
-     
-     public void paintHighScore(Graphics2D g)
-     {
-         g.drawImage(highscore,0,0,null);
-         Font f = new Font("Comic Sans MS", Font.BOLD, 24);
-         Color norm = new Color(4,116,189);
-         Color m = new Color(31,31,82);
-         g.setFont(f);
-         if(mHighscorea == true)
-         {
-             g.setColor(m);
-             g.drawString("BACK", 375, 500);
-         }
-         else
-         {
-             g.setColor(norm);
-             g.drawString("BACK", 375, 500);
-         }
-             
-     }
-     
-     public void paintAbout(Graphics2D g)
-    {
-        g.drawImage(about,0,0,null);
-        Font f = new Font("Forte", Font.BOLD, 30);
-        Color norm = new Color(221, 222, 227);
-        Color m = new Color(82, 104, 169);
-        g.setFont(f);
-        if(mAbouta == true)
-        {
-            g.setColor(m);
-            g.drawString("Back", 700, 500);
-        }
-        else
-        {
-            g.setColor(norm);
-            g.drawString("Back", 700, 500);
-        }
-    }
-     
-     public void paintHelp(Graphics2D g)
-    {
-        g.drawImage(help,0,0,null);
-        Font f = new Font("Forte", Font.BOLD, 30);
-        Color norm = new Color(170, 151, 109);
-        Color m = new Color(82, 104, 169);
-        g.setFont(f);
-        if(mHelpa == true)
-        {
-            g.setColor(norm);
-            g.drawString("Back", 700, 550);
-        }
-        else
-        {
-            g.setColor(m);
-            g.drawString("Back", 700, 550);
-        }
-    }
-
+      
     public void mouseClicked(MouseEvent e) 
     {
         if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205 && Play == false && Pause == false)
@@ -393,13 +211,19 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
         if(e.getX()>700 && e.getX()<815  && e.getY()< 550 && e.getY()>520)
             Help = false;
         if(e.getX()>550 && e.getX()<613  && e.getY()< 100 && e.getY()>70)
+        {
             Play = true;
+            start = false;
+        }
         if(e.getX()>20 && e.getX()<88 && e.getY()>530 && e.getY()<550)
             Play = false;
         if(e.getX()>685 && e.getX()<768 && e.getY()>530 && e.getY()<550)
             Pause = true;
         if(e.getX()>260 && e.getX()<510 && e.getY()<400 && e.getY()>340)
+        {
             Pause = false;
+            start = false;
+        }
         if(e.getX()>550 && e.getX()<715 && e.getY()<135 && e.getY() > 100)
             HighScore = true;
         if(e.getX()>375 && e.getX()<453 && e.getY()<500 && e.getY()>478)
@@ -415,36 +239,18 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             int x = (int)e.getX();
             int y = (int)e.getY();
             if(x>Bird.x && x<Bird.x+50 && y>Bird.y && y<Bird.y+50 )
+            {
+                chirping = new Chirping();
                 System.out.println("HIT");
-            else 
+            }
+            else
+            {
+                if(start == true)
+                    crow = new Crow();
                 System.out.println("NOT");
+            }
             //Bird.IncreaseShow();
         }
-    }
-
-    public void mousePressed(MouseEvent e) 
-    {
-        
-    }
-
-    public void mouseReleased(MouseEvent e) 
-    {
-        
-    }
-
-    public void mouseEntered(MouseEvent e) 
-    {
-        
-    }
-
-    public void mouseExited(MouseEvent e) 
-    {
-        
-    }
-
-    public void keyTyped(KeyEvent e) 
-    {
-        
     }
 
     public void keyPressed(KeyEvent e) 
@@ -452,17 +258,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
         if(e.getKeyCode()==KeyEvent.VK_ESCAPE)
             System.exit(0);
     }
-
-    public void keyReleased(KeyEvent e) 
-    {
-        
-    }
-
-    public void mouseDragged(MouseEvent e) 
-    {
-        
-    }
-
+    
     public void mouseMoved(MouseEvent e) 
     {
          if(e.getX()>550 && e.getX()<613  && e.getY()< 100 && e.getY()>70)
@@ -510,4 +306,12 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
         else
             mHighscorea = false;
     }
+    
+    public void mousePressed(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {}
+    public void keyTyped(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {}
 }

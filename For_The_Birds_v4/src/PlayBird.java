@@ -31,7 +31,7 @@ public class PlayBird extends Birds
 //            bird1[i] = new ImageIcon("Files/Images/Bird1.gif").getImage();
 //            bird2[i] = new ImageIcon("Files/Images/Bird2.gif").getImage();
 //        }
-        bird6 = new ImageIcon("Files/Images/Bird6.png").getImage();
+        bird6 = new ImageIcon("Files/Images/Bird1.gif").getImage();
     }
     
     public void updateBird(){
@@ -63,7 +63,7 @@ public class PlayBird extends Birds
    
     
     public void paint(Graphics2D g){
-        g.drawImage(bird6, x, y, 80,80,null);
+        g.drawImage(bird6, x, y, 50,50,null);
     }
     
     public void IncreaseShow()
