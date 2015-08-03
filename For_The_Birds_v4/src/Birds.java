@@ -1,16 +1,18 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
 import javax.swing.*;
 
 public class Birds implements MouseListener, KeyListener, MouseMotionListener, Runnable
 {
     public Graphics2D gm;
+    static public ScreenManager s;
+    
     PlayBird Bird;
     Chirping chirping;
     Crow crow;
-    static public ScreenManager s;
-    static public Image menu, about, help, background, pause, highscore, bird1, bird2;
+    
+    public static Image menu, about, help, background, pause, highscore;
+    
     static boolean GameMenu = true;
     static boolean letTheBirdToUpdate = true;
     static boolean HighScore = false;
@@ -18,7 +20,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     static boolean Help = false;
     static boolean About = false;
     static boolean Resume = false;
-    static public boolean Play = false;
+    static boolean Play = false;
     static boolean mPlay = false;
     static boolean mHighScore = false;
     static boolean mPause = false;
@@ -32,13 +34,13 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
     static boolean mAbouta = false;
     static boolean mHighscorea = false;
     static boolean birdDrawnOneTime = false;
-    static public boolean showBird = false;
+    static boolean showBird = false;
+    static boolean birdNo = false;
     private boolean start = false;
     
-    long cumTime,timePassed, timePassed2 =0, passedTime;
+    long cumTime,timePassed,timePassed2=0,passedTime;
     
     final static SoundThread bsound = new SoundThread(); //Will start background sound
-    
     
     public static void main(String args[])
     {
@@ -59,8 +61,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
          background = new ImageIcon("Files/Images/background.png").getImage();
          pause = new ImageIcon("Files/Images/Pause.png").getImage();
          highscore = new ImageIcon("Files/Images/HighScore.png").getImage();
-         bird1 = new ImageIcon("Files/Images/Bird1.gif").getImage();
-         bird2 = new ImageIcon("Files/Images/Bird2.gif").getImage();
          s = new ScreenManager();
          Bird = new PlayBird();
      }
@@ -121,16 +121,13 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                  {
                      Pause = false;
                      showBird = true;
-                     //total = 0;
                      cumTime = System.currentTimeMillis();
                      gm = s.getGraphics();
-                     
                      while(Play == true)
                      {
                          start = true;
                         if (letTheBirdToUpdate == true)
                         {
-                            System.out.println("INSIDE updatebird");
                             letTheBirdToUpdate = false;
                             Bird.updateBird();
                         }
@@ -150,7 +147,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                              }
                              start = false;
                          }
-                         
                      }
                  }
             }
@@ -230,6 +226,10 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             HighScore = false;
         if (Play == true && Pause == false)
         {
+            if(birdNo == true)
+                birdNo = false;
+            else
+                birdNo = true;
             About = false;
             Help = false;
             HighScore = false;
@@ -249,7 +249,6 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
                     crow = new Crow();
                 System.out.println("NOT");
             }
-            //Bird.IncreaseShow();
         }
     }
 
@@ -305,8 +304,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
             mHighscorea = true;
         else
             mHighscorea = false;
-    }
-    
+    }    
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
