@@ -694,7 +694,7 @@ public class Birds implements MouseListener, KeyListener, MouseMotionListener, R
       */
     public void mouseClicked(MouseEvent e) 
     {
-        if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205 && Play == false && Pause == false)
+        if(e.getX()>550 && e.getX()<642 && e.getY()<240 && e.getY()>205 && Play == false && Pause == false && About == false && Help == false && HighScore == false && GameMenu == true)
             System.exit(0);
         if(e.getX()>550 && e.getX()<642 && e.getY()<205 && e.getY()>170)
             About = true;
